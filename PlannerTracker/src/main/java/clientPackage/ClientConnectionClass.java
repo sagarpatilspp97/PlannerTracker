@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import org.monte.screenrecorder.ScreenRecorder;
+
 public class ClientConnectionClass implements Runnable {
 
 	private static long nextTime = 0;
@@ -85,7 +86,7 @@ public class ClientConnectionClass implements Runnable {
 	}
 
 	private void sendScreen() throws AWTException, IOException {
-		Socket ClientSocket= new Socket("localhost", 868);
+		Socket ClientSocket = new Socket("localhost", 868);
 //		Toolkit toolkit = Toolkit.getDefaultToolkit();
 //		Dimension dimensions = toolkit.getScreenSize();
 //		Robot robot = new Robot(); // Robot class
@@ -94,26 +95,26 @@ public class ClientConnectionClass implements Runnable {
 //		System.out.println("Screenshot taken");
 		sendScreenRecording(ClientSocket);
 	}
-	
+
 	private static void sendScreenRecording(Socket clientSocket) throws AWTException, IOException {
 		try {
-			MonteScreenRecording msr=new MonteScreenRecording(".mp4", new File("D:\\ScreenShots\\"));
-			File f=msr.createMovieFile(new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
-					CompressorNameKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, DepthKey, 24, FrameRateKey,
-					Rational.valueOf(15), QualityKey, 1.0f, KeyFrameIntervalKey, 15 * 60));
+			MonteScreenRecording msr = new MonteScreenRecording(".mp4", new File("D:\\ScreenShots\\"));
+			File f = msr.createMovieFile(new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey,
+					ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, CompressorNameKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
+					DepthKey, 24, FrameRateKey, Rational.valueOf(15), QualityKey, 1.0f, KeyFrameIntervalKey, 15 * 60));
 			msr.start();
 			try {
 				Thread.sleep(10000);
 			} catch (Exception e) {
 
 			}
-			
+
 			msr.stop();
-			File file=new File(f.getName());
-			byte[] videoBytes=new byte[(int)f.length()];
-			FileInputStream fis=new FileInputStream(file);
+			File file = new File(f.getName());
+			byte[] videoBytes = new byte[(int) f.length()];
+			FileInputStream fis = new FileInputStream(file);
 			fis.close();
-			OutputStream os=clientSocket.getOutputStream();
+			OutputStream os = clientSocket.getOutputStream();
 			os.write(videoBytes);
 			os.flush();
 			clientSocket.close();
