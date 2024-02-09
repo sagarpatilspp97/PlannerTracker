@@ -86,13 +86,19 @@ public class ClientConnectionClass implements Runnable {
 	}
 
 	private void sendScreen() throws AWTException, IOException {
-		Socket ClientSocket = new Socket("localhost", 868);
+		Socket ClientSocket = new Socket("192.168.2.86", 868);
 //		Toolkit toolkit = Toolkit.getDefaultToolkit();
 //		Dimension dimensions = toolkit.getScreenSize();
 //		Robot robot = new Robot(); // Robot class
 //		BufferedImage screenshot = robot.createScreenCapture(new Rectangle(dimensions));
 //		ImageIO.write(screenshot, "png", ClientSocket.getOutputStream());
 //		System.out.println("Screenshot taken");
+//		try {
+//			Thread.sleep(5000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		sendScreenRecording(ClientSocket);
 	}
 
@@ -108,16 +114,28 @@ public class ClientConnectionClass implements Runnable {
 			} catch (Exception e) {
 
 			}
-
 			msr.stop();
-			File file = new File(f.getName());
-			byte[] videoBytes = new byte[(int) f.length()];
-			FileInputStream fis = new FileInputStream(file);
-			fis.close();
-			OutputStream os = clientSocket.getOutputStream();
-			os.write(videoBytes);
-			os.flush();
+			
+			InputStream is = new FileInputStream(new File(f.getName()));
+			byte[] bytes = new byte[1024];
+			OutputStream stream = clientSocket.getOutputStream();
+
+			int count = is.read(bytes, 0, 1024);
+			while (count != -1) {
+			    stream.write(bytes, 0, 1024);
+
+			    count = is.read(bytes, 0, 1024);
+			}                         
+			is.close();
+			stream.flush();
+			stream.close(); 
+			new File(f.getAbsolutePath()).delete();
+			
+//			OutputStream os = clientSocket.getOutputStream();
+//			os.write(videoBytes);
+//			os.flush();
 			clientSocket.close();
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

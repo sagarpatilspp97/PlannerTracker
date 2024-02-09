@@ -50,19 +50,19 @@ public class MonteScreenRecording extends ScreenRecorder {
 		return f;
 	}
 
-	public static void main(String[] args) throws IOException, AWTException {
-		MonteScreenRecording msr = new MonteScreenRecording(".mp4", new File("D:\\ScreenShots\\"));
-		msr.createMovieFile(new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
-				CompressorNameKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, DepthKey, 24, FrameRateKey,
-				Rational.valueOf(15), QualityKey, 1.0f, KeyFrameIntervalKey, 15 * 60));
-		msr.start();
-		try {
-			Thread.sleep(10000);
-		} catch (Exception e) {
-
-		}
-		msr.stop();
-	}
+//	public static void main(String[] args) throws IOException, AWTException {
+//		MonteScreenRecording msr = new MonteScreenRecording(".mp4", new File("D:\\ScreenShots\\"));
+//		msr.createMovieFile(new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
+//				CompressorNameKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, DepthKey, 24, FrameRateKey,
+//				Rational.valueOf(15), QualityKey, 1.0f, KeyFrameIntervalKey, 15 * 60));
+//		msr.start();
+//		try {
+//			Thread.sleep(10000);
+//		} catch (Exception e) {
+//
+//		}
+//		msr.stop();
+//	}
 	
 	
 

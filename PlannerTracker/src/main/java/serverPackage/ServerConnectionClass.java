@@ -8,9 +8,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -33,26 +35,31 @@ public class ServerConnectionClass extends Thread {
 				Socket server = serverSocket.accept();
 				System.out.println("Connection Established");
 				date = new Date();
-//				DateFormat dateFormat = new SimpleDateFormat("_yyMMdd_HHmmss");
-//				String fileName = server.getInetAddress().getHostName().replace(".", "-");
-//				System.out.println(fileName);
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd 'at' HH.mm.ss");
 //				BufferedImage img = ImageIO.read(ImageIO.createImageInputStream(server.getInputStream()));
-//				ImageIO.write(img, "png", new File("D:\\ScreenShots\\" + fileName + dateFormat.format(date) + ".png"));
+//				ImageIO.write(img, ".png", new File("D:\\ScreenShots\\"  + dateFormat.format(date) + ".png"));
 //				System.out.println("Image received!!!!");
-				// lblimg.setIcon(img);
+
+
+
+				File givenfile = new File("C:\\Users\\HP\\Documents\\New folder\\" + dateFormat.format(date) + ".mp4");
+
 				InputStream is = server.getInputStream();
-				byte[] buffer = new byte[1024];
-//				int byteRead;
-				FileOutputStream fos = new FileOutputStream("vedioRecord.MP4");
-				while ((is.read(buffer)) != -1) {
-					fos.write(buffer);
+
+				if ((givenfile.exists() == true) && (givenfile.canWrite() == false)) {
+
+					System.out.println(
+							"The File is already existing and currently it is read only mode. Now we are going to make it writable");
+//					givenfile.setWritable(true);
+//					givenfile.setReadable(isAlive());
+					System.out.println("Writter is on now");
 				}
-				fos.close();
+				copyInputStreamToFile(is, givenfile);
 				is.close();
+				server.close();
 				serverSocket.close();
 			} catch (SocketTimeoutException st) {
 				System.out.println("Socket timed out!");
-//createLogFile("[stocktimeoutexception]"+stExp.getMessage());
 				break;
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -75,5 +82,21 @@ public class ServerConnectionClass extends Thread {
 		if (!newDir.exists()) {
 			boolean isCreated = newDir.mkdir();
 		}
+	}
+
+	private static File copyInputStreamToFile(InputStream inputStream, File file) throws IOException {
+
+		// append = false
+		try (FileOutputStream outputStream = new FileOutputStream(file, true)) {
+			int read;
+			byte[] bytes = new byte[8192];
+			while ((read = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+			outputStream.flush();
+			outputStream.close();
+			return file;
+		}
+
 	}
 }
