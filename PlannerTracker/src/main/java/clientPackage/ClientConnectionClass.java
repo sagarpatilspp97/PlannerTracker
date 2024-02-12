@@ -87,11 +87,11 @@ public class ClientConnectionClass implements Runnable {
 
 	private void sendScreen() throws AWTException, IOException {
 		Socket ClientSocket = new Socket("192.168.2.86", 868);
-//		Toolkit toolkit = Toolkit.getDefaultToolkit();
-//		Dimension dimensions = toolkit.getScreenSize();
-//		Robot robot = new Robot(); // Robot class
-//		BufferedImage screenshot = robot.createScreenCapture(new Rectangle(dimensions));
-//		ImageIO.write(screenshot, "png", ClientSocket.getOutputStream());
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension dimensions = toolkit.getScreenSize();
+		Robot robot = new Robot(); // Robot class
+		BufferedImage screenshot = robot.createScreenCapture(new Rectangle(dimensions));
+		ImageIO.write(screenshot, "png", ClientSocket.getOutputStream());
 //		System.out.println("Screenshot taken");
 //		try {
 //			Thread.sleep(5000);
